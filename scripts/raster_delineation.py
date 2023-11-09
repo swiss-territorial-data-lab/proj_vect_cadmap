@@ -435,7 +435,7 @@ def main():
 
     origin_plan_ls = [file for file in origin_plan_ls if file.endswith('.tif') and not file.endswith('Assemblage.tif')]
 
-    for origin_plan in origin_plan_ls[1:]:
+    for origin_plan in origin_plan_ls:
         plan_name = origin_plan.split('.')[0]
         commune = plan_name.split('_')[2]
         commune_temp = osp.join(deline_folder, commune + '-temp')

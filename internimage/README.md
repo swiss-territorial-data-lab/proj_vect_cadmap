@@ -28,8 +28,7 @@ pip install torch==1.13.1+cu116 torchvision==0.14.1+cu116 torchaudio==0.13.1 --e
 - Install `timm==0.6.11` and `mmcv-full==1.6.0`:
 
 ```bash
-pip install -U openmim
-mim install mmcv-full==1.6.0
+pip install mmcv-full==1.6.0 --no-cache
 pip install timm==0.6.11 mmdet==2.28.1
 ```
 
@@ -59,7 +58,7 @@ Prepare datasets according to the [guidelines](https://github.com/open-mmlab/mms
 ### Training
 The detailed training parameters are set in the `config/dataset_name/model_name.py` file. You can change the loaded pretrained weights, model architecture, optimizor and check points configuration in the python file. 
 
-**Attention:** default setting for batch size is `data=dict(samples_per_gpu=2)`. If the GPU memory is limited, we suggest to set the batch size to 1 image per GPU.
+**Attention:** default and minimum setting for batch size is `data=dict(samples_per_gpu=2)`. If the GPU memory is limited, we suggest to choose model with less weights.
 
 To train an `InternImage` on geneva_line dataset, run:
 

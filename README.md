@@ -114,19 +114,19 @@ python scripts/dataset_generation.py --input_path <path to annotation folder> --
 
 The split of `train`, `val` and `test` set is implemented on the cadastral map level. The user need to split the annotated maps and labels and then run the script on each set. 
 
-After that,  copy or link the generated tiles to the `./internimage/data` folder, which will be organized as following:
+After that, copy or link the generated `images` and `labels_xxx_gray` tiles to the `./internimage/data` folder, which will be organized as following:
 
 ```
-├── internimage									# InternImage Framework for segmentation
+├── internimage				    # InternImage Framework for segmentation
     └── data
-        ├── geneva_line
+        ├── geneva_line         # Binary segmentation dataset 
         │   ├── images
         │   │   ├── train
         │   │   └── val
         │   └── labels
         │       ├── train
         │       └── val
-        └── geneva_semantic
+        └── geneva_semantic     # Multi-class semantic segmentation dataset
             ├── images
             │   ├── train
             │   └── val

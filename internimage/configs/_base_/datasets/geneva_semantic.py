@@ -1,6 +1,6 @@
 # dataset settings
 dataset_type = 'GenevaSemanticDataset'
-data_root = '/home/shanli/Cadmap/InternImage/segmentation/data/geneva_semantic/'
+data_root = './data/geneva_semantic/'
 img_norm_cfg = dict(to_rgb=True)
 crop_size = (512, 1024)
 train_pipeline = [

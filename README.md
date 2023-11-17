@@ -15,11 +15,11 @@ In the experimental process, we used 4 * NVIDIA V100 GPU (32GB). We strongly rec
 
 Model training and vectorization:
 * NVIDIA CUDA 11.6
-* Python 3.8
+* Python 3.10
 
     ```bash
 	#  The dependencies may be installed with either `pip` or `conda`, by making use of the provided `requirements.txt` file.
-    $ conda create -n cadmap -c conda-forge python=3.8 gdal
+    $ conda create -n cadmap -c conda-forge python=3.10 gdal
     $ conda activate cadmap
     $ pip install -r setup/requirements.txt
     ```

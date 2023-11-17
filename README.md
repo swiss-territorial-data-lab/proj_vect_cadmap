@@ -18,8 +18,8 @@ Model training and vectorization:
 * Python 3.10
 
     ```bash
-	#  The dependencies may be installed with either `pip` or `conda`, by making use of the provided `requirements.txt` file.
-    $ conda create -n cadmap -c conda-forge python=3.10 gdal
+	#  The dependencies is suggested to be installed with `conda`, as GDAL is much complicated to config with `pip`
+    $ conda create -n cadmap -c conda-forge python=3.10
     $ conda activate cadmap
     $ pip install -r setup/requirements.txt
     ```

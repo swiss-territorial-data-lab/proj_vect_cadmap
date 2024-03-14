@@ -443,10 +443,10 @@ def main():
 
         print('Current processing plan: {}'.format(plan_name))
         if not osp.exists(commune_temp):
-            os.mkdir(commune_temp)
+            os.makedirs(commune_temp)
             
         if not osp.exists(plan_temp_folder):
-            os.mkdir(plan_temp_folder)
+            os.makedirs(plan_temp_folder)
 
         mask_path = osp.join(mask_folder, commune, plan_name + '.png')
         plan_png = osp.join(plan_temp_folder, plan_name + '.png')

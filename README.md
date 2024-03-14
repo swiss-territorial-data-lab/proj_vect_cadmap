@@ -19,7 +19,7 @@ Model training and vectorization:
 
     ```bash
 	#  The dependencies is suggested to be installed with `conda`, as GDAL is much complicated to config with `pip`
-    $ conda create -n cadmap -c conda-forge python=3.10
+    $ conda create -n cadmap -c conda-forge python=3.10 gdal=3.7.3
     $ conda activate cadmap
     $ pip install -r setup/requirements.txt
     ```
@@ -48,8 +48,8 @@ Annotation pipeline to create your own dataset:
 │   ├── raster_tif								# tif file in image frame exported from arcgis project
 │   └── tiles									# Generated map tiles and all the corresponding labels 
 │       ├── images								# Map tiles
-│       ├── labels_line							# RGB image of line mask
-│       ├── labels_line_gray					# Grayscale image line mask tiles
+│       ├── labels_line							# RGB image of line mask for visualization
+│       ├── labels_line_gray					# Grayscale line mask tiles for training
 │       ├── labels_semantic						# RGB multi-class semantic mask tiles
 │       └── labels_semantic_gray				# Grayscale multi-class semantic mask tiles
 ├── internimage									# InternImage Framework for segmentation 
@@ -101,7 +101,7 @@ Download these data to its folder shown in the folder structure.
 
 ### Annotate the cadastral map with ArcGIS Pro & Photoshop 
 
-The detailed procedures are recorded in the [report](./assets/Vectorization_Cadmap_report.pdf) (page 14). Follow the method documented and store the project folder of each annotated map in the `./data/arcgis/`. Export the raster map file (.png) to `./data/annotations/images/`, the binary and multi-class semantic labels to `./data/annotations/labels_line/` and `./data/annotations/labels_line/labels_semantic/`.	
+The detailed procedures are recorded in the [report](./assets/Vectorization_Cadmap_report.pdf) (page 14). Follow the method documented and store the project folder of each annotated map in the `~/data/arcgis/`. Export the raster map file (.png) to `~/data/annotations/images/`, the binary and multi-class semantic labels to `~/data/annotations/labels_line/` and `~/data/annotations/labels_semantic/`.	
 
 ***Attention: the project name should be consist with the original .tif file name.***
 
@@ -110,11 +110,14 @@ This script samples the cadastral map image with high resolution (around 12,500 
 
 ```
 python scripts/dataset_generation.py --input_path <path to annotation folder> --save_path <path to dataset folder> 
+# e.g. python scripts/dataset_generation.py --input_path /path_to_project/data/annotaion/train --save_path /path_to_project/data/tiles/train
+# e.g. python scripts/dataset_generation.py --input_path /path_to_project/data/annotaion/val --save_path /path_to_project/data/tiles/val
+# e.g. python scripts/dataset_generation.py --input_path /path_to_project/data/annotaion/test --save_path /path_to_project/data/tiles/test
 ```
 
 The split of `train`, `val` and `test` set is implemented on the cadastral map level. The user need to split the annotated maps and labels and then run the script on each set. 
 
-After that, copy or link the generated `images` and `labels_xxx_gray` tiles to the `./internimage/data` folder, which will be organized as following:
+After that, copy or link the generated `images` and `labels_xxx_gray` tiles to the `~/internimage/data` folder, which will be organized as following:
 
 ```
 ├── internimage				    # InternImage Framework for segmentation
@@ -122,10 +125,12 @@ After that, copy or link the generated `images` and `labels_xxx_gray` tiles to t
         ├── geneva_line         # Binary segmentation dataset 
         │   ├── images
         │   │   ├── train
-        │   │   └── val
+        │   │   ├── val
+        │   │   └── test
         │   └── labels
         │       ├── train
-        │       └── val
+        │       ├── val
+        │       └── test
         └── geneva_semantic     # Multi-class semantic segmentation dataset
             ├── images
             │   ├── train
@@ -136,13 +141,13 @@ After that, copy or link the generated `images` and `labels_xxx_gray` tiles to t
 ```
 
 ### Semantic segmentation 
-Use the generated datasets and follow the instruction of InternImage [here](/internimage/README.md) to train the neural networks and produce the binary and multi-class semantic segmentation prediction mask on the test maps respectively. Results should be stored in `./data/line_prediction_mask` and `./data/semantic_prediction_mask`.
+Use the generated datasets and follow the instruction of InternImage [here](/internimage/README.md) to train the neural networks and produce the binary and multi-class semantic segmentation prediction mask on the test maps respectively. Results should be stored in `~/data/line_prediction_mask` and `~/data/semantic_prediction_mask`.
 
 ### Raster delineation
 Delineate line prediction mask given the path to folder of test GeoTiff file and the masks.  
 
 ```
-python scripts/raster_delineation.py --tif_path <original tif> --line_mask <line prediction mask> --save_path <delineation folder> 
+python scripts/raster_delineation.py --tif_path <original tif folder> --line_mask <line prediction mask folder> --save_path <delineation folder> 
 ```
 
 ### ArcGIS operation  

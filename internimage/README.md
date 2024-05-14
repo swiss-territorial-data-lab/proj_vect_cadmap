@@ -124,7 +124,17 @@ Evaluation for semantic segmentation model can be conducted with the same method
 
 ### Inference on cadastral maps
 
-To inference a series of cadastral map from a community for binary segmentation:
+Before running the script, the source code of mmseg need to be modified in `${CONDA_PATH}/envs/cadmap/lib/python3.10/site-packages/mmseg/datasets/pipelines/formatting.py.
+Replace line 280~281 with following code:
+
+```
+        for key in self.meta_keys:
+            if key in results.keys():
+                img_meta[key] = results[key]
+            img_meta['pad_shape'] = results['img_shape']
+```
+
+To inference a series of cadastral map from a community for binary segmentation, run:
 
 ```bash
 export IMG_FOLDER_PATH="/path/to/image_folder"

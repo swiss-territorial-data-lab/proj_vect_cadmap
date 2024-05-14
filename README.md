@@ -171,6 +171,8 @@ python scripts/post_processing.py --arcgis <arcgis folder> --tif <original tif> 
 
 After post-processing, the projected vectorized results can be found in `output` folder. 
 
+We provide an example [jupyter notebook](./scripts/evaluation.ipynb) to calculate the mIoU and Hausdorff Distances for vector-level assessment. 
+
 
 ### Documentation
 The full documentation of the project is available on the STDL's technical website: **give link here...**

@@ -137,10 +137,10 @@ Before running the script, the source code of `mmseg` need to be modified in `${
 To infere the binary segmentation of a series of cadastral plans for a community, run :
 
 ```bash
-export IMG_FOLDER_PATH="/path/to/image_folder"
+export IMG_FOLDER_PATH="</path/to/image_folder>"
 export OUTPUT_PATH="../data/line_prediction_mask"
-export CFG_PTH="../configs/geneva_line/config_file.py"
-export WEIGHT_PATH="/path/to/model/ckpt.pth"
+export CFG_PTH="configs/geneva_line/<config_file.py>"
+export WEIGHT_PATH="</path/to/model/ckpt.pth>"
 
 # to observe the input image and the output mask at the same time, users can set the mask opacity to 0.5
 python inference.py --input_path ${IMG_FOLDER_PATH} --save_path ${OUTPUT_PATH} --cfg ${CFG_PTH} --ckpt ${WEIGHT_PATH} --opacity 1 --palette line
@@ -148,10 +148,10 @@ python inference.py --input_path ${IMG_FOLDER_PATH} --save_path ${OUTPUT_PATH} -
 
 For multi-class semantic segmentation:
 ```bash
-export IMG_FOLDER_PATH="/path/to/image_folder"
+export IMG_FOLDER_PATH="</path/to/image_folder>"
 export OUTPUT_PATH="../data/semantic_prediction_mask"
-export CFG_PTH="../configs/geneva_semantic/config_file.py"
-export WEIGHT_PATH="/path/to/model/ckpt.pth"
+export CFG_PTH="configs/geneva_semantic/config_file.py"
+export WEIGHT_PATH="</path/to/model/ckpt.pth>"
 
 # to observe the input image and the output mask at the same time, users can set the mask opacity to 0.5
 python inference.py --input_path ${IMG_FOLDER_PATH} --save_path ${OUTPUT_PATH} --cfg ${CFG_PTH} --ckpt ${WEIGHT_PATH} --opacity 1 --palette semantic  

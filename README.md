@@ -149,7 +149,7 @@ Use the generated datasets and follow the instruction of InternImage [here](/int
 Delineate the line prediction mask using the path to folder containing the test GeoTiff file and masks.  
 
 ```
-python scripts/raster_delineation.py --tif_path <folder path to the initial tiff files> --line_mask <folder path to the line prediction masks> --save_path <folder path to save delineation results> 
+python scripts/raster_delineation.py --tif_path <path to the initial tiff file folder> --line_mask <path to the line prediction mask folder> --save_path <path to save delineation result folder> 
 ```
 
 ### ArcGIS operation 
@@ -170,7 +170,7 @@ After vectorization, the workflow integrates text recognition from [EasyOCR](htt
 
 Due to time constraints, the pre-trained model of EasyOCR for French is used in this case. The accuracy of the text recognition depends strongly on the writing style of the historical plan. The user can perform custom training on his own dataset using the EasyOCR API or disable this feature by setting the argument `--ocr False`.
 ```
-python scripts/post_processing.py --arcgis <folder path to arcgis outputs> --tif <folder path to the initial tiff files> --raster_tif <folder path to raster tif> --semantic <folder path to multi-class semantic prediction> --ocr <True/False> --method <elementary/sophisticated>
+python scripts/post_processing.py --arcgis <path to arcgis output folder> --tif <path to the initial tiff file folder> --raster_tif <path to raster tif folder> --semantic <path to multi-class semantic prediction folder> --ocr <True/False> --method <elementary/sophisticated>
 ```
 
 After post-processing, the projected vectorized results can be found in `output` folder. 

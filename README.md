@@ -149,14 +149,14 @@ Use the generated datasets and follow the instruction of InternImage [here](/int
 Delineate the line prediction mask using the path to folder containing the test GeoTiff file and masks.  
 
 ```
-python scripts/raster_delineation.py --tif_path <original tif> --line_mask <line prediction mask> --save_path <delineation folder> 
+python scripts/raster_delineation.py --tif_path <folder path to the initial tiff files> --line_mask <folder path to the line prediction masks> --save_path <folder path to save delineation results> 
 ```
 
 ### ArcGIS operation 
 
-In this part, each plan resulting from the raster delineation is vectorized according to the following steps (elementary method as example):
+In this part, each plan resulting from the raster delineation is vectorized according to the following steps (elementary method as an example):
 
-1. Create a new ArcGIS project **named** with the plan file name in the `./data/arcgis/` folder.
+1. Create a new ArcGIS project **named** with the name of the plan file in the `./data/arcgis/` folder.
 2. Import the `raster_tif` (.tif) and `elementary_result` (.png) files.
 2. Search for `Raster to Polyline` in ArcGIS Conversion tools: select `elementary_result.png` as input raster. Name the output polyline `elementary_polyline`.
 3. Open the `Edit` panel, use tools such as `Select`, `Create` and `Delete` to remove the polyline from the single plan area. Manually remove false positives and false negatives wherever possible. Connect missing lines to form polygons. Here, false positives that cannot form a polygon can be ignored.
@@ -170,7 +170,7 @@ After vectorization, the workflow integrates text recognition from [EasyOCR](htt
 
 Due to time constraints, the pre-trained model of EasyOCR for French is used in this case. The accuracy of the text recognition depends strongly on the writing style of the historical plan. The user can perform custom training on his own dataset using the EasyOCR API or disable this feature by setting the argument `--ocr False`.
 ```
-python scripts/post_processing.py --arcgis <arcgis folder> --tif <original tif> --raster_tif <raster tif> --semantic <multi-class semantic prediction> --ocr <True/False> --method <elementary/sophisticated>
+python scripts/post_processing.py --arcgis <folder path to arcgis outputs> --tif <folder path to the initial tiff files> --raster_tif <folder path to raster tif> --semantic <folder path to multi-class semantic prediction> --ocr <True/False> --method <elementary/sophisticated>
 ```
 
 After post-processing, the projected vectorized results can be found in `output` folder. 

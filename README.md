@@ -1,15 +1,16 @@
-# Vectorization of Historical Cadastral Maps
-This repository is the implementation of project [*Vectorization of Historical Cadastral Maps*](https://tech.stdl.ch/PROJ-ROADSURF/) by [STDL](https://www.stdl.ch/). This project utilizes the capacity of computer vision algorithm and deep learning techniques to achieve the semi-automatic vectorization of histogram cadastral maps in Geneva (1850s). Details can be explored in this [report](./assets/Vectorization_Cadmap_report.pdf). 
+# Vectorization of Historical Cadastral Plans
 
-A annotation pipeline was developed to get the ground truth label for semantic segmentation neural networks. We also created a historical cadastral map dataset with the label for binary and the multi-class segmentation. 
+This repository is the implementation of the project *Vectorization of Historical Cadastral Plans* conducted by the [STDL](https://www.stdl.ch/). It uses the capacity of computer vision algorithms and deep learning techniques to achieve semi-automatic vectorization of historical cadastral plans in Geneva (1850s). Details of the project can be found in the published [documentation](https://tech.stdl.ch/PROJ-/) and in this [report](./assets/Vectorization_Cadmap_report.pdf). 
 
-The deep learning models are build based on the official implementation of [InternImage](https://github.com/opengvlab/internimage) framework. In this project, a CNN architecture **UperNet** and a ViT (Vision Transformer) **Segformer** are tested. 
+An annotation pipeline was developed to get the ground truth label for semantic segmentation neural networks. An historical cadastral map dataset with the label for binary and the multi-class segmentation as also created. 
+
+The deep learning models are built based on the official implementation of [InternImage](https://github.com/opengvlab/internimage) framework. In this project, a CNN architecture **UperNet** and a ViT (Vision Transformer) **Segformer** are tested. 
 
 ## Hardware requirements
 
 OS: Linux 
 
-In the experimental process, we used 4 * NVIDIA V100 GPU (32GB). We strongly recommend using GPU with a memory capacity of 16GB or more for training the deep learning models in this project.  
+In the experimental process, we used 4 * NVIDIA V100 GPU (32 GB). We strongly recommend using GPU with a memory capacity of 16 GB or more for training the deep learning models in this project.  
 
 ## Software Requirements
 
@@ -19,14 +20,13 @@ Model training and vectorization:
 
     ```bash
 	#  The dependencies is suggested to be installed with `conda`, as GDAL is much complicated to config with `pip`
-    $ conda create -n cadmap -c conda-forge python=3.10 gdal=3.7.3
+    $ conda create -n cadmap -c conda-forge python=3.10
     $ conda activate cadmap
     $ pip install -r setup/requirements.txt
     ```
 
-Annotation pipeline to create your own dataset:
+The following software tools were used to create the annotated dataset:
 * Photoshop 
-
 * ArcGIS Pro
 
 ## Folder structure
@@ -48,8 +48,8 @@ Annotation pipeline to create your own dataset:
 │   ├── raster_tif								# tif file in image frame exported from arcgis project
 │   └── tiles									# Generated map tiles and all the corresponding labels 
 │       ├── images								# Map tiles
-│       ├── labels_line							# RGB image of line mask for visualization
-│       ├── labels_line_gray					# Grayscale line mask tiles for training
+│       ├── labels_line							# RGB image of line mask
+│       ├── labels_line_gray					# Grayscale image line mask tiles
 │       ├── labels_semantic						# RGB multi-class semantic mask tiles
 │       └── labels_semantic_gray				# Grayscale multi-class semantic mask tiles
 ├── internimage									# InternImage Framework for segmentation 
@@ -82,42 +82,36 @@ Annotation pipeline to create your own dataset:
 <image src="assets/workflow.svg" >
 </figure>
 
-The project uses Geo-referenced Tiff file as the start point. With the annotation pipeline, it created 2 datasets: `Geneva_line` and `Geneva_semantic` with thousands of image tiles and their corresponding semantic masks for binary and multi-class semantic segmentation. The prediction of binary segmentation (borderline) is conducted to extract the topology of the map, which is later vectorized to obtain the vector polygon for parcels. Multi-class semantic segmentation module aims to identity the classification of the extracted polygons. The optical recognition module targets on detect and recognize the parcel/building indexes shown on the map. Finally, all the information are aggregated to a .shp file and projected to the real spatial referenced coordinate system.
+The project workflow is illustrated in the image above. It uses georeferenced (GeoTiff) file as a starting point. The annotation pipeline creates two datasets, `Geneva_line` and `Geneva_semantic`, with thousands of image tiles and their corresponding semantic masks for binary and multi-class semantic segmentation. Binary segmentation prediction (borderline) is performed to extract the plan topology, which is then vectorized to obtain the vector polygon of the parcels. The multi-class semantic segmentation module identifies the classification of the extracted polygons. The optical recognition module aims to detect and recognize the parcel/building indices appearing on the plan. Finally, all the information is aggregated in a shape file and projected onto the spatially referenced coordinate system.
 
-The workflow of the project is illustrated in the image above. Original geo-referenced cadastral map (GeoTiff) file is provided by the domain expertise from Conton of Geneva. The scanned cadastral maps are manually calibrated within Geneva_local coordinate system. If you do not want to reproduce the annotation pipeline, you can start from [dataset generation](#generate-datasets) with published data. Otherwise, please following the procedure below.
+For this project, the original georeferenced cadastral plan (GeoTiff) file is supplied by the domain experts from the canton of Geneva. The scanned cadastral plans are manually georeferenced in the local Geneva coordinate system. 
+
+If you do not want to reproduce the annotation pipeline, you can start from [dataset generation](#generate-datasets) with the published data. Otherwise, please follow the procedure below.
 
 
 ### Data preparation
-#### Download link 
 
-Download these data to its folder shown in the folder structure.
+#### Data
 
-[Dufour_Origine_plans]()
+Input data (Dufour plans, Annotations and Raster GeoTiff files) and model weights are available on request.
 
-[Annotations]() 
+### Annotate the cadastral plans with ArcGIS Pro & Photoshop 
 
-[Raster GeoTiff]()
-
-
-### Annotate the cadastral map with ArcGIS Pro & Photoshop 
-
-The detailed procedures are recorded in the [report](./assets/Vectorization_Cadmap_report.pdf) (page 14). Follow the method documented and store the project folder of each annotated map in the `~/data/arcgis/`. Export the raster map file (.png) to `~/data/annotations/images/`, the binary and multi-class semantic labels to `~/data/annotations/labels_line/` and `~/data/annotations/labels_semantic/`.	
+The detailed annotation procedures are documented in the [report](./assets/Vectorization_Cadmap_report.pdf) (page 14). Follow the method and store the project folder of each annotated plan in `./data/arcgis/`. Export the raster plan (png) file to `./data/annotations/images/`, the binary and multi-class semantic labels to `./data/annotations/labels_line/` and `./data/annotations/labels_line/labels_semantic/` respectively.	
 
 ***Attention: the project name should be consist with the original .tif file name.***
 
 ### Generate datasets
-This script samples the cadastral map image with high resolution (around 12,500 * 8,000) to small image tiles with corresponding labels. The size and amount of the random sampled tiles can be configured with arguments.
+
+This script samples the high-resolution cadastral plan image (approx. 12,500 * 8,000) into small image tiles with corresponding labels. The size and quantity of the randomly sampled tiles can be configured with arguments.
 
 ```
 python scripts/dataset_generation.py --input_path <path to annotation folder> --save_path <path to dataset folder> 
-# e.g. python scripts/dataset_generation.py --input_path /path_to_project/data/annotaion/train --save_path /path_to_project/data/tiles/train
-# e.g. python scripts/dataset_generation.py --input_path /path_to_project/data/annotaion/val --save_path /path_to_project/data/tiles/val
-# e.g. python scripts/dataset_generation.py --input_path /path_to_project/data/annotaion/test --save_path /path_to_project/data/tiles/test
 ```
 
-The split of `train`, `val` and `test` set is implemented on the cadastral map level. The user need to split the annotated maps and labels and then run the script on each set. 
+The split of `train`, `val` and `test` sets is implemented at the cadastral plan level. The user must to split the annotated plans and labels and then run the scripts on each set. 
 
-After that, copy or link the generated `images` and `labels_xxx_gray` tiles to the `~/internimage/data` folder, which will be organized as following:
+Next, copy or link the generated `images` and `labels_xxx_gray` tiles into the `./internimage/data` folder, which is organized as follows:
 
 ```
 ├── internimage				    # InternImage Framework for segmentation
@@ -125,12 +119,10 @@ After that, copy or link the generated `images` and `labels_xxx_gray` tiles to t
         ├── geneva_line         # Binary segmentation dataset 
         │   ├── images
         │   │   ├── train
-        │   │   ├── val
-        │   │   └── test
+        │   │   └── val
         │   └── labels
         │       ├── train
-        │       ├── val
-        │       └── test
+        │       └── val
         └── geneva_semantic     # Multi-class semantic segmentation dataset
             ├── images
             │   ├── train
@@ -141,41 +133,37 @@ After that, copy or link the generated `images` and `labels_xxx_gray` tiles to t
 ```
 
 ### Semantic segmentation 
-Use the generated datasets and follow the instruction of InternImage [here](/internimage/README.md) to train the neural networks and produce the binary and multi-class semantic segmentation prediction mask on the test maps respectively. Results should be stored in `~/data/line_prediction_mask` and `~/data/semantic_prediction_mask`.
+
+Use the generated datasets and follow the instruction of InternImage [here](/internimage/README.md) to train the neural networks and produce the binary and multi-class semantic segmentation prediction masks on the test plans. Results should be saved in `./data/line_prediction_mask` and `./data/semantic_prediction_mask`.
+
 
 ### Raster delineation
-Delineate line prediction mask given the path to folder of test GeoTiff file and the masks.  
+
+Delineate the line prediction mask using the path to folder containing the test GeoTiff file and masks.  
 
 ```
-python scripts/raster_delineation.py --tif_path <original tif folder> --line_mask <line prediction mask folder> --save_path <delineation folder> 
+python scripts/raster_delineation.py --tif_path <path to the initial tiff file folder> --line_mask <path to the line prediction mask folder> --save_path <path to save delineation result folder> 
 ```
 
-### ArcGIS operation  
-In this part, each resulted plan from raster delineation are vectorized with the following steps (elementary method as example):
+### ArcGIS operation 
 
-1. Create a new ArcGIS map project **named** with the map filename under `./data/arcgis/` folder.
-2. Import raster_tif file (.tif), elementary_result (.png).
-2. Search `Raster to Polyline (Convention Tools)`: select `elementary_result.png` as input raster. Name the output ployline features as `polyline_elementary`.
-3. Open the `Edit` panel, utilize tools like `Select`, `Create` and `Delete` to delete the polyline outside the unique area of the map. Manually remove the false positive and false negatives as much as possible. Connect missed lines to form polygons. Here, false positives that can not form a polygon can be ignored.
-4. In `Catalog` panel, create a new polygon feature class named `polygon_elementary` in `Databases>project_name.gdb` file.
-5. Select all features in `polyline_elementary` and open `Construct Polygons` tool in `Modify Features` panel. Choose `polygon_elementary` as template, run the tool.
-6. Search `Simplify Shared Edges (Cartography Tools)`. Choose `polygon_elementary` as input feature. Set Simplification Algorithm to `Retain effective areas`, Simplification Tolerance to 5 meters. Run the algorithm.
+In this part, each plan resulting from the raster delineation is vectorized according to the following steps (elementary method as an example):
+
+1. Create a new ArcGIS project **named** with the name of the plan file in the `./data/arcgis/` folder.
+2. Import the `raster_tif` (.tif) and `elementary_result` (.png) files.
+2. Search for `Raster to Polyline` in ArcGIS Conversion tools: select `elementary_result.png` as input raster. Name the output polyline `elementary_polyline`.
+3. Open the `Edit` panel, use tools such as `Select`, `Create` and `Delete` to remove the polyline from the single plan area. Manually remove false positives and false negatives wherever possible. Connect missing lines to form polygons. Here, false positives that cannot form a polygon can be ignored.
+4. In the `Catalog` panel, create a new polygon feature class named `polygon_elementary` in the `Databases>project_name.gdb` file.
+5. Select all features in `polyline_elementary` and open the `Construct Polygons` tool in the `Modify Features` panel. Choose `polygon_elementary` as template and run the tool.
+6. Search for `Simplify shared edges (Mapping tools)`. Choose `polygon_elementary` as input feature. Set the simplification algorithm to `Retain effective areas` and the simplification tolerance to 5 meters. Run the algorithm.
 
 ### Post-processing 
-After vectorization, this script will integrate the text recognition from [EasyOCR](https://github.com/JaidedAI/EasyOCR) and multi-class semantic information into the vector polygon as attributes.
 
-Limited by time, the pretrained model from EasyOCR for French is used in this case. The accuracy of text recognition is strongly related to the handwriting style of the historical map. The user can do customized training on their own dataset with the API from EasyOCR or deactivate this function by setting the argument `--ocr False`.
+After vectorization, the workflow integrates text recognition from [EasyOCR](https://github.com/JaidedAI/EasyOCR) and multi-class semantic information into the vector polygon as attributes.
+
+Due to time constraints, the pre-trained model of EasyOCR for French is used in this case. The accuracy of the text recognition depends strongly on the writing style of the historical plan. The user can perform custom training on his own dataset using the EasyOCR API or disable this feature by setting the argument `--ocr False`.
 ```
-python scripts/post_processing.py --arcgis <arcgis folder> --tif <original tif> --raster_tif <raster tif> --semantic <multi-class semantic prediction> --ocr <True/False> --method <elementary/sophisticated>
+python scripts/post_processing.py --arcgis <path to arcgis output folder> --tif <path to the initial tiff file folder> --raster_tif <path to raster tif folder> --semantic <path to multi-class semantic prediction folder> --ocr <True/False> --method <elementary/sophisticated>
 ```
 
 After post-processing, the projected vectorized results can be found in `output` folder. 
-
-We provide an example [jupyter notebook](./scripts/evaluation.ipynb) to calculate the mIoU and Hausdorff Distances for vector-level assessment. 
-
-
-### Documentation
-The full documentation of the project is available on the STDL's technical website: **give link here...**
-
-
-

@@ -5,7 +5,7 @@ import numpy as np
 from tqdm import tqdm
 from kneed import KneeLocator
 from skimage import morphology
-
+import pdb
 import os.path as osp
 import networkx as nx
 from kneed import KneeLocator
@@ -92,6 +92,7 @@ def mask_complete(img_path):
 
     # Load image
     img = cv2.imread(img_path)
+    print(img_path)
     # Convert image to grayscale
     labels = img[:, :, 0]
     labels[labels != 255] = 0
@@ -461,7 +462,7 @@ def main():
         print('Segmentation mask cleaning in process...')
         mask_clean = mask_complete(mask_path)
         cv2.imwrite(osp.join(plan_temp_folder, 'mask_clean.png'), mask_clean)
-
+        
         # create the grayscale image of the original cadastral map
         gray_mask_area = mask_area_to_grayscale(plan_png, plan_temp_folder)
         cv2.imwrite(osp.join(plan_temp_folder, 'grayscale.png'), gray_mask_area)

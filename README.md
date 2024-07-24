@@ -86,7 +86,7 @@ The project workflow is illustrated in the image above. It uses georeferenced (G
 
 For this project, the original georeferenced cadastral plan (GeoTiff) file is supplied by the domain experts from the canton of Geneva. The scanned cadastral plans are manually georeferenced in the local Geneva coordinate system. 
 
-If you do not want to reproduce the annotation pipeline, you can start from [dataset generation](#generate-datasets) with the published data. Otherwise, please follow the procedure below.
+If you do not want to reproduce the annotation pipeline, you can start from [dataset generation](#generate-datasets) with the data available on request. Otherwise, please follow the procedure below.
 
 
 ### Data preparation

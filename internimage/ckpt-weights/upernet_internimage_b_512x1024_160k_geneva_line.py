@@ -156,6 +156,6 @@ checkpoint_config = dict(by_epoch=False, interval=2000)
 evaluation = dict(
     interval=2000, metric='mIoU', pre_eval=True, save_best='mIoU')
 pretrained = 'https://huggingface.co/OpenGVLab/InternImage/resolve/main/upernet_internimage_b_512x1024_160k_cityscapes.pth'
-work_dir = '/mnt/data_02/sli/git/proj_vect_cadmap/internimage/ckpt-weights'
+work_dir = './internimage/ckpt-weights'
 gpu_ids = [0]
 auto_resume = False

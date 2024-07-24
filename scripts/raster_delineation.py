@@ -92,7 +92,7 @@ def mask_complete(img_path):
 
     # Load image
     img = cv2.imread(img_path)
-    print(img_path)
+
     # Convert image to grayscale
     labels = img[:, :, 0]
     labels[labels != 255] = 0

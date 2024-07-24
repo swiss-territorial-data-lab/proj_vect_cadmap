@@ -1,6 +1,6 @@
 # Vectorization of Historical Cadastral Plans
 
-This repository is the implementation of the project *Vectorization of Historical Cadastral Plans* conducted by the [STDL](https://www.stdl.ch/). It uses the capacity of computer vision algorithms and deep learning techniques to achieve semi-automatic vectorization of historical cadastral plans in Geneva (1850s). Details of the project can be found in the published [documentation](https://tech.stdl.ch/PROJ-/) and in this [report](./assets/Vectorization_Cadmap_report.pdf). 
+This repository is the implementation of the project *Vectorization of Historical Cadastral Plans* conducted by the [STDL](https://www.stdl.ch/). It uses the capacity of computer vision algorithms and deep learning techniques to achieve semi-automatic vectorization of historical cadastral plans in Geneva (1850s). Details of the project can be found in the published [documentation](https://tech.stdl.ch/PROJ-CADMAP/) and in this [report](./assets/Vectorization_Cadmap_report.pdf). 
 
 An annotation pipeline was developed to get the ground truth label for semantic segmentation neural networks. An historical cadastral map dataset with the label for binary and the multi-class segmentation as also created. 
 

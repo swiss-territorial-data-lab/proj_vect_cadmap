@@ -91,16 +91,9 @@ If you do not want to reproduce the annotation pipeline, you can start from [dat
 
 ### Data preparation
 
-#### Data download
+#### Data
 
-Download this data to the folder indicated in the folder structure.
-
-[Dufour_Origine_plans]()
-
-[Annotations]() 
-
-[Raster GeoTiff]()
-
+Input data (Dufour plans, Annotations and Raster GeoTiff files) and model weights are available on request.
 
 ### Annotate the cadastral plans with ArcGIS Pro & Photoshop 
 
